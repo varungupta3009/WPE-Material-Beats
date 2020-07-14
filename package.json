@@ -1,0 +1,35 @@
+{
+  "name": "material-beats",
+  "version": "1.0.0",
+  "description": "A Wallpaper Engine Web Wallpaper based on ppfei's canvasBg.",
+  "main": "Dots.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "VRG",
+  "license": "Unlicense",
+  "devDependencies": {
+    "eslint": "^7.4.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/varungupta3009/WPE-Material-Beats.git"
+  },
+  "keywords": [
+    "WPE",
+    "Wallpaper",
+    "Engine",
+    "Wallpaper",
+    "Material"
+  ],
+  "bugs": {
+    "url": "https://github.com/varungupta3009/WPE-Material-Beats/issues"
+  },
+  "homepage": "https://github.com/varungupta3009/WPE-Material-Beats#readme"
+}
