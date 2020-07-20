@@ -23,7 +23,7 @@ const myObject = {
 	population: 0,
 	pointFrequencyIndex: 0,
 	pointSize: 15,
-	showPoint: true,
+	showPoints: true,
 	moveOnBeats: true,
 	pointDensity: 1,
 	pulseSmoothness: 0.5,
@@ -42,36 +42,36 @@ const myObject = {
 
 window.wallpaperPropertyListener = {
 	applyUserProperties: function (properties) {
-		if (properties.number) {
-			myObject.pointDensity = properties.number.value;
+		if (properties.point_density) {
+			myObject.pointDensity = properties.point_density.value;
 			myObject.initializePoints();
 		}
 
-		if (properties.bgcolor)
+		if (properties.background_color)
 			canvas.style.backgroundColor =
 				'rgb(' +
-				properties.bgcolor.value
+				properties.background_color.value
 					.split(' ')
 					.map((c) => Math.ceil(c * 255)) +
 				')';
 
-		if (properties.image)
-			if (properties.image.value) {
+		if (properties.background_image)
+			if (properties.background_image.value) {
 				canvas.style.backgroundImage =
-					'url(file:///' + properties.image.value + ')';
+					'url(file:///' + properties.background_image.value + ')';
 				canvas.style.backgroundSize = '100% 100%';
 			} else canvas.style.backgroundImage = 'none';
 
-		if (properties.ratio) myObject.pointSize = properties.ratio.value / 1.5;
+		if (properties.point_size) myObject.pointSize = properties.point_size.value / 1.5;
 
-		if (properties.tEqualize)
-			myObject.pulseSmoothness = 1 - properties.tEqualize.value / 10;
+		if (properties.beat_smoothness)
+			myObject.pulseSmoothness = 1 - properties.beat_smoothness.value / 10;
 
-		if (properties.showpoint)
-			myObject.showPoint = properties.showpoint.value;
+		if (properties.show_points)
+			myObject.showPoints = properties.show_points.value;
 
-		if (properties.smovefollow)
-			myObject.moveOnBeats = properties.smovefollow.value;
+		if (properties.move_on_beats)
+			myObject.moveOnBeats = properties.move_on_beats.value;
 	},
 };
 
@@ -151,7 +151,7 @@ Point.prototype.drawSelf = function () {
 window.onload = () => {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	for (let i = 0; i < myObject.population; i++)
-		if (myObject.showPoint) myObject.pointsArray[i].drawSelf();
+		if (myObject.showPoints) myObject.pointsArray[i].drawSelf();
 	window.myRequestAnimationFrame(window.onload);
 };
 

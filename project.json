@@ -1,0 +1,79 @@
+{
+	"file" : "index.html",
+	"general" : 
+	{
+		"supportsaudioprocessing" : true,
+		"properties" : 
+		{
+			"background_color" : 
+			{
+				"condition" : "",
+				"order" : 105,
+				"text" : "Background Color",
+				"type" : "color",
+				"value" : "0.06274509803921569 0.06666666666666667 0.0784313725490196"
+			},
+			"background_image" : 
+			{
+				"order" : 106,
+				"text" : "Background Image",
+				"type" : "file",
+				"value" : ""
+			},
+			"beat_smoothness" : 
+			{
+				"fraction" : false,
+				"max" : 8,
+				"min" : 1,
+				"order" : 104,
+				"text" : "Beat Smoothness",
+				"type" : "slider",
+				"value" : 5
+			},
+			"move_on_beats" : 
+			{
+				"order" : 103,
+				"text" : "Move On Beats?",
+				"type" : "bool",
+				"value" : true
+			},
+			"point_density" : 
+			{
+				"fraction" : false,
+				"max" : 8,
+				"min" : 1,
+				"order" : 101,
+				"text" : "Point Density",
+				"type" : "slider",
+				"value" : 2
+			},
+			"point_size" : 
+			{
+				"fraction" : false,
+				"max" : 30,
+				"min" : 5,
+				"order" : 102,
+				"text" : "Point Size",
+				"type" : "slider",
+				"value" : 20
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0.06274509803921569 0.06666666666666667 0.0784313725490196"
+			},
+			"show_points" : 
+			{
+				"order" : 100,
+				"text" : "Show Points?",
+				"type" : "bool",
+				"value" : true
+			}
+		}
+	},
+	"title" : "Material Beats",
+	"type" : "web",
+	"version" : 0
+}
