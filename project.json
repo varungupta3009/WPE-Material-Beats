@@ -1,62 +1,12 @@
 {
+	"approved" : true,
+	"contentrating" : "Everyone",
+	"description" : "An audio responsive Web Canvas Wallpaper based on [url=https://steamcommunity.com/id/ppfei]ppfei's[/url] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=830067666]canvasBg.[/url]",
 	"file" : "index.html",
 	"general" : 
 	{
-		"supportsaudioprocessing" : true,
 		"properties" : 
 		{
-			"background_color" : 
-			{
-				"condition" : "",
-				"order" : 105,
-				"text" : "Background Color",
-				"type" : "color",
-				"value" : "0.06274509803921569 0.06666666666666667 0.0784313725490196"
-			},
-			"background_image" : 
-			{
-				"order" : 106,
-				"text" : "Background Image",
-				"type" : "file",
-				"value" : ""
-			},
-			"beat_smoothness" : 
-			{
-				"fraction" : false,
-				"max" : 8,
-				"min" : 1,
-				"order" : 104,
-				"text" : "Beat Smoothness",
-				"type" : "slider",
-				"value" : 5
-			},
-			"move_on_beats" : 
-			{
-				"order" : 103,
-				"text" : "Move On Beats?",
-				"type" : "bool",
-				"value" : true
-			},
-			"point_density" : 
-			{
-				"fraction" : false,
-				"max" : 8,
-				"min" : 1,
-				"order" : 101,
-				"text" : "Point Density",
-				"type" : "slider",
-				"value" : 2
-			},
-			"point_size" : 
-			{
-				"fraction" : false,
-				"max" : 30,
-				"min" : 5,
-				"order" : 102,
-				"text" : "Point Size",
-				"type" : "slider",
-				"value" : 20
-			},
 			"schemecolor" : 
 			{
 				"order" : 0,
@@ -64,16 +14,84 @@
 				"type" : "color",
 				"value" : "0.06274509803921569 0.06666666666666667 0.0784313725490196"
 			},
-			"show_points" : 
+			"show_shapes" : 
 			{
 				"order" : 100,
-				"text" : "Show Points?",
+				"text" : "Show Shapes?",
 				"type" : "bool",
 				"value" : true
+			},
+			"shape_density" : 
+			{
+				"condition" : "show_shapes.value",
+				"fraction" : false,
+				"max" : 8,
+				"min" : 1,
+				"order" : 101,
+				"text" : "Shape Density",
+				"type" : "slider",
+				"value" : 2
+			},
+			"shape_size" : 
+			{
+				"condition" : "show_shapes.value",
+				"fraction" : false,
+				"max" : 30,
+				"min" : 5,
+				"order" : 102,
+				"text" : "Shape Size",
+				"type" : "slider",
+				"value" : 20
+			},
+			"pulse_on_beats" : 
+			{
+				"condition" : "show_shapes.value",
+				"order" : 103,
+				"text" : "Pulse On Beats?",
+				"type" : "bool",
+				"value" : true
+			},
+			"pulse_smoothness" : 
+			{
+				"condition" : "show_shapes.value",
+				"fraction" : false,
+				"max" : 8,
+				"min" : 1,
+				"order" : 104,
+				"text" : "Pulse Smoothness",
+				"type" : "slider",
+				"value" : 5
+			},
+			"move_on_bass" : 
+			{
+				"condition" : "show_shapes.value",
+				"order" : 105,
+				"text" : "Move On Bass?",
+				"type" : "bool",
+				"value" : true
+			},
+			"background_color" : 
+			{
+				"order" : 106,
+				"text" : "Background Color",
+				"type" : "color",
+				"value" : "0.06274509803921569 0.06666666666666667 0.0784313725490196"
+			},
+			"background_image" : 
+			{
+				"order" : 107,
+				"text" : "Background Image",
+				"type" : "file",
+				"value" : ""
 			}
-		}
+		},
+		"supportsaudioprocessing" : true
 	},
+	"preview" : "preview.gif",
+	"tags" : [ "Music" ],
 	"title" : "Material Beats",
-	"type" : "web",
-	"version" : 0
+	"type" : "Web",
+	"version" : 2,
+	"visibility" : "public",
+	"workshopid" : "2171017158"
 }

@@ -1,3 +1,26 @@
+const myObject = {
+	// peakValue: 1,
+	population: 0,
+	shapeFrequencyIndex: 0,
+	shapeSize: 15,
+	showShapes: true,
+	moveOnBass: true,
+	pulseOnBeats: true,
+	shapeDensity: 1,
+	pulseSmoothness: 0.5,
+	shapesArray: [],
+	initializeShapes: () => {
+		myObject.shapesArray = [];
+		myObject.population = Math.floor(
+			(Math.floor((canvas.width * canvas.height) / 5000) *
+				myObject.shapeDensity) /
+				4
+		);
+		for (let i = 0; i < myObject.population; i++)
+			myObject.shapesArray.push(new Shape());
+	},
+};
+
 window.myRequestAnimationFrame = (() =>
 	window.requestAnimationFrame ||
 	window.webkitRequestAnimationFrame ||
@@ -6,12 +29,20 @@ window.myRequestAnimationFrame = (() =>
 		window.setTimeout(callback, 1000 / 60);
 	})();
 
-const audioFrequencyArray = new Array(32);
+const lAudioFrequencyArray = new Array(32);
+const rAudioFrequencyArray = new Array(32);
 
 window.wallpaperRegisterAudioListener &&
 	window.wallpaperRegisterAudioListener((frequencyArray) => {
-		for (let i = 0; i < 32; i++)
-			audioFrequencyArray[i] = Math.floor(frequencyArray[i * 4] * 100);
+		// myObject.peakValue = myObject.peakValue * 0.99 + Math.max(frequencyArray);
+		for (let i = 0; i < 32; i++) {
+			lAudioFrequencyArray[i] = Math.floor(
+				(frequencyArray[i] + frequencyArray[i + 32]) * 50 // / myObject.peakValue
+			);
+			rAudioFrequencyArray[i] = Math.floor(
+				(frequencyArray[i + 64] + frequencyArray[i + 96]) * 50 // / myObject.peakValue
+			);
+		}
 	});
 
 const canvas = document.getElementById('canvas');
@@ -19,66 +50,51 @@ const context = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const myObject = {
-	population: 0,
-	pointFrequencyIndex: 0,
-	pointSize: 15,
-	showPoints: true,
-	moveOnBeats: true,
-	pointDensity: 1,
-	pulseSmoothness: 0.5,
-	pointsArray: [],
-	initializePoints: () => {
-		myObject.pointsArray = [];
-		myObject.population = Math.floor(
-			(Math.floor((canvas.width * canvas.height) / 5000) *
-				myObject.pointDensity) /
-				4
-		);
-		for (let i = 0; i < myObject.population; i++)
-			myObject.pointsArray.push(new Point());
-	},
-};
-
 window.wallpaperPropertyListener = {
 	applyUserProperties: function (properties) {
-		if (properties.point_density) {
-			myObject.pointDensity = properties.point_density.value;
-			myObject.initializePoints();
-		}
-
-		if (properties.background_color)
+		if (properties['background_color'])
 			canvas.style.backgroundColor =
 				'rgb(' +
-				properties.background_color.value
+				properties['background_color'].value
 					.split(' ')
 					.map((c) => Math.ceil(c * 255)) +
 				')';
 
-		if (properties.background_image)
-			if (properties.background_image.value) {
+		if (properties['background_image'])
+			if (properties['background_image'].value) {
 				canvas.style.backgroundImage =
-					'url(file:///' + properties.background_image.value + ')';
+					'url(file:///' + properties['background_image'].value + ')';
 				canvas.style.backgroundSize = '100% 100%';
 			} else canvas.style.backgroundImage = 'none';
 
-		if (properties.point_size) myObject.pointSize = properties.point_size.value / 1.5;
+		if (properties['show_shapes']) {
+			myObject.showShapes = properties['show_shapes'].value;
 
-		if (properties.beat_smoothness)
-			myObject.pulseSmoothness = 1 - properties.beat_smoothness.value / 10;
+			if (properties['shape_density']) {
+				myObject.shapeDensity = properties['shape_density'].value;
+				myObject.initializeShapes();
+			}
 
-		if (properties.show_points)
-			myObject.showPoints = properties.show_points.value;
+			if (properties['shape_size'])
+				myObject.shapeSize = properties['shape_size'].value / 1.5;
 
-		if (properties.move_on_beats)
-			myObject.moveOnBeats = properties.move_on_beats.value;
+			if (properties['pulse_on_beats'])
+				myObject.pulseOnBeats = properties['pulse_on_beats'].value;
+
+			if (properties['pulse_smoothness'])
+				myObject.pulseSmoothness =
+					1 - properties['pulse_smoothness'].value / 10;
+
+			if (properties['move_on_bass'])
+				myObject.moveOnBass = properties['move_on_bass'].value;
+		}
 	},
 };
 
-function Point() {
+function Shape() {
 	this.type = Math.random() < 0.5;
 	this.rotation = Math.random() < 0.5;
-	this.index = myObject.pointFrequencyIndex++;
+	this.index = myObject.shapeFrequencyIndex++;
 	this.x = Math.random() * canvas.width;
 	this.y = Math.random() * canvas.height;
 	this.speedX = -0.5 + Math.random();
@@ -93,21 +109,25 @@ function Point() {
 	this.angle2 = this.type
 		? 0
 		: (Math.round(Math.random() * 100) / 200 + 1) * Math.PI;
-	myObject.pointFrequencyIndex %= 32;
+	myObject.shapeFrequencyIndex %= 32;
 }
 
-Point.prototype.drawSelf = function () {
-	// Move Point
-	const momentum = myObject.moveOnBeats
+Shape.prototype.drawSelf = function () {
+	const audioFrequencyArray =
+		this.x < canvas.width / 2 ? lAudioFrequencyArray : rAudioFrequencyArray;
+	// Move Shape
+	const momentum = myObject.moveOnBass
 		? Math.min(
 				Math.max(
-					audioFrequencyArray.slice(1, 6).reduce((a, b) => a + b, 0) *
-						0.12,
+					audioFrequencyArray
+						// lAudioFrequencyArray.map((num, idx) => num + rAudioFrequencyArray[idx])
+						.slice(1, 6)
+						.reduce((a, b) => a + b, 0) * 0.12,
 					0.5
 				),
 				5
 		  )
-		: 1.5;
+		: 0.5;
 	const newRadius = this.intermediateRadius + (this.type ? 0 : 5);
 	this.x += this.speedX * momentum;
 	this.y += this.speedY * momentum;
@@ -130,10 +150,10 @@ Point.prototype.drawSelf = function () {
 		this.angle2 += (this.rotation ? 0.01 : -0.01) * momentum;
 	}
 
-	// Draw Point
+	// Draw Shape
 	let frequency = audioFrequencyArray[this.index] / 20;
-	if (!frequency || frequency < 1) frequency = 1;
-	let radius = Math.min(this.radius * frequency, 4) * myObject.pointSize;
+	if (!frequency || frequency < 1 || !myObject.pulseOnBeats) frequency = 1;
+	let radius = Math.min(this.radius * frequency, 4) * myObject.shapeSize;
 	if (this.intermediateRadius && myObject.pulseSmoothness !== 1)
 		radius =
 			radius * myObject.pulseSmoothness +
@@ -151,7 +171,7 @@ Point.prototype.drawSelf = function () {
 window.onload = () => {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	for (let i = 0; i < myObject.population; i++)
-		if (myObject.showPoints) myObject.pointsArray[i].drawSelf();
+		if (myObject.showShapes) myObject.shapesArray[i].drawSelf();
 	window.myRequestAnimationFrame(window.onload);
 };
 
@@ -159,7 +179,7 @@ window.onresize = () => {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	myObject.population = Math.floor((canvas.width * canvas.height) / 5000);
-	myObject.initializePoints();
+	myObject.initializeShapes();
 };
 
 window.onresize();
